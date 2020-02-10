@@ -19,3 +19,5 @@ $colors: (
 $link: $text;
 $link-invert: $text-invert;
 $link-focus-border: $primary;
+
+$shadow: 2px 2px 10px transparentize($text, 0.8);

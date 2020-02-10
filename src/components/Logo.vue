@@ -21,7 +21,7 @@ export default {
   &__container {
     text-transform: lowercase;
     font-family: Comfortaa, sans-serif;
-    text-shadow: 2px 2px 5px transparentize($text, 0.8);
+    text-shadow: $shadow;
   }
 }
 </style>
