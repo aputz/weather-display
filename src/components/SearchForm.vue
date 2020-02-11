@@ -1,9 +1,9 @@
 <template class="container">
-  <form class="search-form__container" name="search-form" @submit.stop="handleSubmision()">
+  <form class="search-form__container" name="search-form" @submit.prevent="handleSubmision()">
     <h2 class="title is-2">Enter a city name</h2>
     <p class="subtitle is-4">to look up weather in following days</p>
-    <b-field label="City name">
-      <b-autocomplete v-model="cityName" :data="filteredNamesArray" placeholder="City name" icon="magnify" @select="option => selected = option">
+    <b-field label="City name" :type="isValid ? '' : 'is-danger'" :message="isValid ? '' : 'You need to enter an existing city'">
+      <b-autocomplete v-model="cityName" :data="filteredNamesArray" placeholder="City name" icon="magnify" @select="option => cityName = option">
         <template slot="empty">No results found</template>
       </b-autocomplete>
     </b-field>
@@ -19,7 +19,8 @@ export default {
       cityName: '',
       names: ['London', 'Berlin', 'Tokyo', 'Vienna'],
       selected: null,
-      isLoading: false
+      isLoading: false,
+      isValid: true
     }
   },
   computed: {
@@ -28,7 +29,9 @@ export default {
     }
   },
   methods: {
-    handleSubmission () {}
+    handleSubmision () {
+      this.isValid = !!this.cityName
+    }
   }
 }
 </script>
