@@ -12,6 +12,8 @@
 </template>
 
 <script>
+import store from '../store/index'
+
 export default {
   name: 'SearchForm',
   data () {
@@ -31,6 +33,9 @@ export default {
   methods: {
     handleSubmision () {
       this.isValid = !!this.cityName
+      if (this.isValid) {
+        store.dispatch('getForecast', this.cityName)
+      }
     }
   }
 }
