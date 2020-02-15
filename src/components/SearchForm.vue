@@ -13,6 +13,7 @@
 
 <script>
 import store from '../store/index'
+import { StoreActions } from '../helpers/store-helper'
 
 export default {
   name: 'SearchForm',
@@ -34,7 +35,7 @@ export default {
     handleSubmision () {
       this.isValid = !!this.cityName
       if (this.isValid) {
-        store.dispatch('getForecast', this.cityName)
+        store.dispatch(StoreActions.GET_FORECAST, this.cityName)
       }
     }
   }

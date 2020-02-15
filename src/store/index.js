@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 import axios from 'axios'
 
 import config from '../../config.json'
+import { StoreActions, StoreMutations } from '../helpers/store-helper'
 
 Vue.use(Vuex)
 
@@ -15,23 +16,21 @@ export default new Vuex.Store({
     forecast: []
   },
   mutations: {
-    setForecast (state, forecast) {
+    [StoreMutations.SET_FORECAST] (state, forecast) {
       state.forecast = forecast
     },
-    setCityData (state, cityData) {
+    [StoreMutations.SET_CITY_DATA] (state, cityData) {
       state.city = cityData
     }
   },
   actions: {
-    getForecast ({ commit, state }, cityName) {
+    [StoreActions.GET_FORECAST] ({ commit, state }, cityName) {
       axios.get(`${apiAddress}?q=${cityName}&appid=${apiKey}`)
         .then(response => response.data)
         .then(({ city, list }) => {
-          commit('setCityData', city)
-          commit('setForecast', list)
+          commit(StoreMutations.SET_CITY_DATA, city)
+          commit(StoreMutations.SET_FORECAST, list)
         })
     }
-  },
-  modules: {
   }
 })
