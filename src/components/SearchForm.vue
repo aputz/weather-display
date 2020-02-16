@@ -12,7 +12,6 @@
 </template>
 
 <script>
-import store from '../store/index'
 import { StoreActions } from '../helpers/store-helper'
 
 export default {
@@ -35,7 +34,7 @@ export default {
     handleSubmision () {
       this.isValid = !!this.cityName
       if (this.isValid) {
-        store.dispatch(StoreActions.GET_FORECAST, this.cityName)
+        this.$store.dispatch(StoreActions.GET_FORECAST, this.cityName)
       }
     }
   }
@@ -43,19 +42,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../assets/custom.scss';
 
 .search-form {
-  &__container {
-    background: $white;
-    padding: 2rem;
-    box-shadow: $shadow;
-
-    @media(min-width: 1600px) {
-      max-width: 40rem;
-    }
-  }
-
   &__submit {
     margin-left: auto;
     margin-right: 0;

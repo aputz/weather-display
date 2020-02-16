@@ -1,21 +1,21 @@
 <template>
   <div class="home__container">
-    <SearchForm />
+    <div class="home__nested-container">
+      <router-view></router-view>
+    </div>
   </div>
 </template>
 
 <script>
-import SearchForm from '../components/SearchForm.vue'
 
 export default {
-  name: 'Home',
-  components: {
-    SearchForm
-  }
+  name: 'Home'
 }
 </script>
 
 <style lang="scss" scoped>
+@import '../assets/custom.scss';
+
 .home {
   &__container {
     height: 100%;
@@ -25,6 +25,16 @@ export default {
     align-content: center;
     justify-content: center;
     align-items: center;
+  }
+
+  &__nested-container {
+    background: $white;
+    padding: 2rem;
+    box-shadow: $shadow;
+
+    @media(min-width: 1600px) {
+      max-width: 40rem;
+    }
   }
 }
 </style>

@@ -3,7 +3,7 @@ import Vuex from 'vuex'
 import axios from 'axios'
 
 import config from '../../config.json'
-import { StoreActions, StoreMutations } from '../helpers/store-helper'
+import { StoreActions, StoreMutations, StoreGetters } from '../helpers/store-helper'
 
 Vue.use(Vuex)
 
@@ -21,6 +21,14 @@ export default new Vuex.Store({
     },
     [StoreMutations.SET_CITY_DATA] (state, cityData) {
       state.city = cityData
+    }
+  },
+  getters: {
+    [StoreGetters.FORECAST] (state) {
+      return state.forecast
+    },
+    [StoreGetters.CITY_DATA] (state) {
+      return state.city
     }
   },
   actions: {
