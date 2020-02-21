@@ -34,7 +34,11 @@ export default {
     handleSubmision () {
       this.isValid = !!this.cityName
       if (this.isValid) {
+        this.isLoading = true
         this.$store.dispatch(StoreActions.GET_FORECAST, this.cityName)
+          .then(() => {
+            this.$router.push({ name: 'Results', params: { cityName: this.cityName } })
+          })
       }
     }
   }
