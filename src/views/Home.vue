@@ -31,6 +31,7 @@ export default {
     background: $white;
     padding: 2rem;
     box-shadow: $shadow;
+    width: 80vw;
 
     @media(min-width: 1600px) {
       max-width: 40rem;

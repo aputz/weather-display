@@ -12,12 +12,12 @@ const apiKey = config['api-key']
 
 export default new Vuex.Store({
   state: {
-    city: {},
+    city: null,
     forecast: []
   },
   mutations: {
     [StoreMutations.SET_FORECAST] (state, forecast) {
-      state.forecast = forecast
+      state.forecast = [...forecast]
     },
     [StoreMutations.SET_CITY_DATA] (state, cityData) {
       state.city = cityData

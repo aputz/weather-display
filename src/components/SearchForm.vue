@@ -19,7 +19,7 @@ export default {
   data () {
     return {
       cityName: '',
-      names: ['London', 'Berlin', 'Tokyo', 'Vienna'],
+      names: ['London', 'Berlin', 'Tokyo', 'Vienna', 'Washington'],
       selected: null,
       isLoading: false,
       isValid: true

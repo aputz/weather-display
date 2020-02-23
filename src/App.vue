@@ -5,7 +5,7 @@
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style lang="scss" scopped>
 @import "assets/custom";
 @import "~bulma";
 @import "~buefy/src/scss/buefy";
