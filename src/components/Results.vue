@@ -13,11 +13,16 @@
         <img :src="createIconUrl(item.weather[0].icon)" class="description-icon" alt="" />
         <span class="description">{{ item.weather[0].description }}</span>
         <span class="temp-header">Temperature</span>
-        <span class="temp-value">{{ item.main.temp }}</span>
+        <span class="temp-value">{{ parseInt(item.main.temp) }}&VeryThinSpace;&deg;C</span>
         <span class="hum-header">Humidity</span>
-        <span class="hum-value">{{ item.main.humidity }}</span>
+        <span class="hum-value">{{ item.main.humidity }}&VeryThinSpace;%</span>
         <span class="clouds-header">Clouds</span>
-        <span class="clouds-value">{{ item.clouds.all }}</span>
+        <span class="clouds-value">{{ item.clouds.all }}&VeryThinSpace;%</span>
+        <span class="wind-header">Wind</span>
+        <span class="wind-value">
+          <b-icon icon="arrow-up" size="is-small" :style="`transform: rotate(${item.wind.deg}deg)`"></b-icon>
+          {{ item.wind.speed }}&VeryThinSpace;m/s
+        </span>
       </li>
     </ul>
   </div>
@@ -81,10 +86,10 @@ export default {
     display: grid;
     gap: 0 0.5rem;
     grid-template-rows: repeat(2, auto);
-    grid-template-columns: repeat(2, auto) 1fr repeat(3, minmax(5rem, max-content));
+    grid-template-columns: repeat(2, auto) 1fr repeat(4, minmax(5rem, max-content));
     grid-template-areas:
-      'hour icon description temperature-header humidity-header clouds-header'
-      'date icon description temperature-value humidity-value clouds-value';
+      'hour icon description temperature-header humidity-header clouds-header wind-header'
+      'date icon description temperature-value humidity-value clouds-value wind-value';
 
     &:last-child {
       border-bottom: unset;
@@ -92,7 +97,7 @@ export default {
   }
 }
 
-.date, .hour, .temp-header, .hum-header, .clouds-header {
+.date, .hour, .temp-header, .hum-header, .clouds-header, .wind-header {
   color: $primary;
   text-transform: uppercase;
 }
@@ -142,5 +147,13 @@ export default {
 
 .clouds-value {
   grid-area: clouds-value;
+}
+
+.wind-header {
+  grid-area: wind-header;
+}
+
+.wind-value {
+  grid-area: wind-value;
 }
 </style>

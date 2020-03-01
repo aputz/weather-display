@@ -33,7 +33,12 @@ export default new Vuex.Store({
   },
   actions: {
     [StoreActions.GET_FORECAST] ({ commit }, cityName) {
-      return axios.get(`${apiAddress}?q=${cityName}&appid=${apiKey}`)
+      const params = {
+        appid: apiKey,
+        q: cityName,
+        units: 'metric'
+      }
+      return axios.get(apiAddress, { params })
         .then(response => response.data)
         .then(({ city, list }) => {
           commit(StoreMutations.SET_CITY_DATA, city)
