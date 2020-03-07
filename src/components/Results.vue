@@ -12,17 +12,19 @@
         <span class="date">{{ dateFormat(item.dt_txt) }}</span>
         <img :src="createIconUrl(item.weather[0].icon)" class="description-icon" alt="" />
         <span class="description">{{ item.weather[0].description }}</span>
-        <span class="temp-header">Temperature</span>
-        <span class="temp-value">{{ parseInt(item.main.temp) }}&VeryThinSpace;&deg;C</span>
-        <span class="hum-header">Humidity</span>
-        <span class="hum-value">{{ item.main.humidity }}&VeryThinSpace;%</span>
-        <span class="clouds-header">Clouds</span>
-        <span class="clouds-value">{{ item.clouds.all }}&VeryThinSpace;%</span>
-        <span class="wind-header">Wind</span>
-        <span class="wind-value">
-          <b-icon icon="arrow-up" size="is-small" :style="`transform: rotate(${item.wind.deg}deg)`"></b-icon>
-          {{ item.wind.speed }}&VeryThinSpace;m/s
-        </span>
+        <div class="info">
+          <span class="temp-header">Temperature</span>
+          <span class="temp-value">{{ parseInt(item.main.temp) }}&VeryThinSpace;&deg;C</span>
+          <span class="hum-header">Humidity</span>
+          <span class="hum-value">{{ item.main.humidity }}&VeryThinSpace;%</span>
+          <span class="clouds-header">Clouds</span>
+          <span class="clouds-value">{{ item.clouds.all }}&VeryThinSpace;%</span>
+          <span class="wind-header">Wind</span>
+          <span class="wind-value">
+            <b-icon icon="arrow-up" size="is-small" :style="`transform: rotate(${item.wind.deg}deg)`"></b-icon>
+            {{ item.wind.speed }}&VeryThinSpace;m/s
+          </span>
+        </div>
       </li>
     </ul>
   </div>
@@ -85,14 +87,23 @@ export default {
     border-bottom: solid 1px transparentize($primary, 0.8);
     display: grid;
     gap: 0 0.5rem;
-    grid-template-rows: repeat(2, auto);
-    grid-template-columns: repeat(2, auto) 1fr repeat(4, minmax(5rem, max-content));
+    grid-template-rows: repeat(3, auto);
+    grid-template-columns: repeat(2, auto) 1fr;
     grid-template-areas:
-      'hour icon description temperature-header humidity-header clouds-header wind-header'
-      'date icon description temperature-value humidity-value clouds-value wind-value';
+      'hour icon description'
+      'date icon description'
+      'info info info';
 
     &:last-child {
       border-bottom: unset;
+    }
+
+    @media (min-width: 85rem) {
+      grid-template-rows: repeat(2, auto);
+      grid-template-columns: repeat(2, auto) 1fr auto;
+      grid-template-areas:
+        'hour icon description info'
+        'date icon description info';
     }
   }
 }
@@ -125,35 +136,44 @@ export default {
   grid-area: icon;
 }
 
-.temp-header {
-  grid-area: temperature-header;
+.info {
+  grid-area: info;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-auto-rows: 2rem;
+
+  span:nth-child(even) {
+    text-align: right;
+  }
+
+  @media(min-width: 48rem) {
+    grid-template: repeat(2, auto) / repeat(4, 1fr);
+    grid-auto-flow: column;
+
+    span {
+      text-align: center;
+
+      &:nth-child(even) {
+        text-align: center;
+      }
+    }
+  }
+
+  @media (min-width: 85rem) {
+    grid-template-columns: repeat(4, minmax(8rem, max-content));
+
+    span {
+      text-align: left;
+
+      &:nth-child(odd) {
+        align-self: end;
+      }
+
+      &:nth-child(even) {
+        text-align: left;
+      }
+    }
+  }
 }
 
-.temp-value {
-  grid-area: temperature-value;
-}
-
-.hum-header {
-  grid-area: humidity-header;
-}
-
-.hum-value {
-  grid-area: humidity-value;
-}
-
-.clouds-header {
-  grid-area: clouds-header;
-}
-
-.clouds-value {
-  grid-area: clouds-value;
-}
-
-.wind-header {
-  grid-area: wind-header;
-}
-
-.wind-value {
-  grid-area: wind-value;
-}
 </style>

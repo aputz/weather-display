@@ -32,11 +32,8 @@ export default {
     padding: 2rem;
     box-shadow: $shadow;
     width: 80vw;
+    max-width: 60rem;
     margin: 2rem 0;
-
-    @media(min-width: 1600px) {
-      max-width: 40rem;
-    }
   }
 }
 </style>
