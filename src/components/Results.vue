@@ -1,8 +1,7 @@
 <template class="container">
   <div class="results__container">
     <div v-if="cityData" class="results__city-data">
-      <h2 class="title is-2">{{ cityData.name }} <b-icon icon="weather-sunny" size="is-small" type="is-light">
-            </b-icon></h2>
+      <h2 class="title is-2">{{ cityData.name }}</h2>
       <span class="tag is-primary">{{ cityData.country }}</span>
       <span class="tag is-light">{{ timezone }}</span>
     </div>

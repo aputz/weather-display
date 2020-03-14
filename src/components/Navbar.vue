@@ -1,9 +1,11 @@
 <template>
   <b-navbar class="navbar__container" type="is-transparent">
     <template slot="brand">
-      <b-navbar-item :to="{ path: '/' }" class="navbar__brand">
-        <Logo :appName="appName"/>
-      </b-navbar-item>
+      <router-link to="/">
+        <b-navbar-item class="navbar__brand">
+          <Logo :appName="appName"/>
+        </b-navbar-item>
+      </router-link>
     </template>
   </b-navbar>
 </template>
@@ -35,6 +37,7 @@ export default {
 
   &__brand {
     position: relative;
+    height: 100%;
 
     &::before {
       content: '';
