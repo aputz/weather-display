@@ -1,13 +1,18 @@
 import Vue from 'vue'
 import router from './router'
 import store from './store'
-import Buefy from 'buefy'
+import { Navbar, Field, Autocomplete, Notification, Button, Icon } from 'buefy'
 import 'buefy/dist/buefy.css'
 
 import App from './App.vue'
 
 Vue.config.productionTip = false
-Vue.use(Buefy)
+Vue.use(Navbar)
+Vue.use(Field)
+Vue.use(Autocomplete)
+Vue.use(Notification)
+Vue.use(Button)
+Vue.use(Icon)
 
 new Vue({
   router,
