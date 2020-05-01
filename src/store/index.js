@@ -13,7 +13,8 @@ const apiKey = config['api-key']
 export default new Vuex.Store({
   state: {
     city: null,
-    forecast: []
+    forecast: [],
+    suggestions: []
   },
   mutations: {
     [StoreMutations.SET_FORECAST] (state, forecast) {
@@ -21,6 +22,9 @@ export default new Vuex.Store({
     },
     [StoreMutations.SET_CITY_DATA] (state, cityData) {
       state.city = cityData
+    },
+    [StoreMutations.SET_SUGGESTIONS] (state, suggestions) {
+      state.suggestions = suggestions
     }
   },
   getters: {
@@ -29,6 +33,9 @@ export default new Vuex.Store({
     },
     [StoreGetters.CITY_DATA] (state) {
       return state.city
+    },
+    [StoreGetters.SUGGESTIONS] (state) {
+      return state.suggestions
     }
   },
   actions: {
@@ -44,6 +51,15 @@ export default new Vuex.Store({
           commit(StoreMutations.SET_CITY_DATA, city)
           commit(StoreMutations.SET_FORECAST, list)
         })
+    },
+    [StoreActions.GET_SUGGESTIONS] ({ commit }, fragment) {
+      const url = `/api/search/${fragment}`
+      return axios.get(url)
+        .then(response => response.data.result)
+        .then(response => {
+          commit(StoreMutations.SET_SUGGESTIONS, response)
+        })
+        .catch(e => console.log(e))
     }
   }
 })

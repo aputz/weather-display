@@ -3,7 +3,7 @@
     <h2 class="title is-2">Enter a city name</h2>
     <p class="subtitle is-4">to look up weather in following days</p>
     <b-field label="City name" :type="isValid  ? '' : 'is-danger'" :message="isValid ? '' : 'You need to enter an existing city'">
-      <b-autocomplete v-model="cityName" :data="filteredNamesArray" placeholder="City name" icon="magnify" @select="option => cityName = option" @focus="unsetError()">
+      <b-autocomplete v-model="cityName" :data="suggestions" :custom-formatter="option => `${option.name}, ${option.country}`" :loading="isLoading" placeholder="City name" icon="magnify" @input="getSuggestions()" @select="option => cityName = option" @focus="unsetError()">
         <template slot="empty">No results found</template>
       </b-autocomplete>
     </b-field>
@@ -15,14 +15,13 @@
 </template>
 
 <script>
-import { StoreActions } from '../helpers/store-helper'
+import { StoreActions, StoreGetters } from '../helpers/store-helper'
 
 export default {
   name: 'SearchForm',
   data () {
     return {
       cityName: '',
-      names: ['London', 'Berlin', 'Tokyo', 'Vienna', 'Washington'],
       selected: null,
       isLoading: false,
       isValid: true,
@@ -30,8 +29,8 @@ export default {
     }
   },
   computed: {
-    filteredNamesArray () {
-      return this.names.filter(name => name.toString().toLowerCase().indexOf(this.cityName.toLowerCase()) >= 0)
+    suggestions () {
+      return this.$store.getters[StoreGetters.SUGGESTIONS]
     }
   },
   methods: {
@@ -49,6 +48,13 @@ export default {
     },
     unsetError () {
       this.isError = false
+    },
+    getSuggestions () {
+      if (!!this.cityName && this.cityName.length >= 3) {
+        this.isLoading = true
+        this.$store.dispatch(StoreActions.GET_SUGGESTIONS, this.cityName)
+          .finally(() => { this.isLoading = false })
+      }
     }
   }
 }
