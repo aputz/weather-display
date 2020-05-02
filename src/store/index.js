@@ -2,13 +2,13 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
 
-import config from '../../config.json'
+// import config from '../../config.json'
 import { StoreActions, StoreMutations, StoreGetters } from '../helpers/store-helper'
 
 Vue.use(Vuex)
 
-const apiAddress = config['api-address']
-const apiKey = config['api-key']
+// const apiAddress = config['api-address']
+// const apiKey = config['api-key']
 
 export default new Vuex.Store({
   state: {
@@ -39,13 +39,10 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    [StoreActions.GET_FORECAST] ({ commit }, cityName) {
-      const params = {
-        appid: apiKey,
-        q: cityName,
-        units: 'metric'
-      }
-      return axios.get(apiAddress, { params })
+    [StoreActions.GET_FORECAST] ({ commit }, id) {
+      const url = `/api/forecast/${id}`
+
+      return axios.get(url)
         .then(response => response.data)
         .then(({ city, list }) => {
           commit(StoreMutations.SET_CITY_DATA, city)
@@ -54,12 +51,16 @@ export default new Vuex.Store({
     },
     [StoreActions.GET_SUGGESTIONS] ({ commit }, fragment) {
       const url = `/api/search/${fragment}`
+      commit(StoreMutations.SET_SUGGESTIONS, [])
       return axios.get(url)
         .then(response => response.data.result)
         .then(response => {
           commit(StoreMutations.SET_SUGGESTIONS, response)
         })
         .catch(e => console.log(e))
+    },
+    [StoreActions.CLEAR_SUGGESTIONS] ({ commit }) {
+      commit(StoreMutations.SET_SUGGESTIONS, [])
     }
   }
 })

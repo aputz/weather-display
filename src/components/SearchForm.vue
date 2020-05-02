@@ -2,14 +2,11 @@
   <form class="search-form__container" name="search-form" @submit.prevent="handleSubmision()">
     <h2 class="title is-2">Enter a city name</h2>
     <p class="subtitle is-4">to look up weather in following days</p>
-    <b-field label="City name" :type="isValid  ? '' : 'is-danger'" :message="isValid ? '' : 'You need to enter an existing city'">
-      <b-autocomplete v-model="cityName" :data="suggestions" :custom-formatter="option => `${option.name}, ${option.country}`" :loading="isLoading" placeholder="City name" icon="magnify" @input="getSuggestions()" @select="option => cityName = option" @focus="isEmpty = false">
+    <b-field label="City name" :type="isValid ? '' : 'is-danger'" :message="isValid ? '' : 'You need to enter an existing city'">
+      <b-autocomplete v-model="selected" :data="suggestions" :custom-formatter="option => `${option.name}, ${option.country}`" :loading="isLoading" placeholder="City name" icon="magnify" @input="getSuggestions()" @select="option => handleSelection(option)" @focus="isValid = true">
         <template v-if="showDropdown" slot="empty">No results found</template>
       </b-autocomplete>
     </b-field>
-      <b-notification type="is-danger" :active.sync="isEmpty" :closable="true">
-        The city could not be found. Make sure the name is correct and try again!
-      </b-notification>
     <b-button type="is-primary search-form__submit" native-type="submit" :loading="isLoading">Look up the weather</b-button>
   </form>
 </template>
@@ -21,11 +18,11 @@ export default {
   name: 'SearchForm',
   data () {
     return {
-      cityName: '',
-      selected: null,
+      city: {},
+      selected: '',
+      isSelected: false,
       isLoading: false,
-      isValid: true,
-      isEmpty: false
+      isValid: true
     }
   },
   computed: {
@@ -33,31 +30,41 @@ export default {
       return this.$store.getters[StoreGetters.SUGGESTIONS]
     },
     showDropdown () {
-      return !!this.cityName && this.cityName >= 3
+      return !!this.selected && this.selected.length >= 3
     }
   },
   methods: {
     handleSubmision () {
-      this.isValid = !!this.cityName
-      if (this.isValid) {
+      if (this.isValid && !!this.city) {
+        const { id, name } = this.city
         this.isLoading = true
-        this.$store.dispatch(StoreActions.GET_FORECAST, this.cityName)
-          .then(() => this.$router.push({ name: 'Results', params: { cityName: this.cityName } }),
+        this.$store.dispatch(StoreActions.GET_FORECAST, id)
+          .then(() => this.$router.push({ name: 'Results', params: { city: name } }),
             (ee) => {
               this.isLoading = false
             })
       }
     },
     getSuggestions () {
-      if (!!this.cityName && this.cityName.length >= 3) {
+      if (this.selected.length >= 3) {
         this.isLoading = true
-        this.isEmpty = false
-        this.$store.dispatch(StoreActions.GET_SUGGESTIONS, this.cityName)
+        this.$store.dispatch(StoreActions.GET_SUGGESTIONS, this.selected)
           .then(() => {
-            this.isEmpty = !this.suggestions.lenght
+            if (!this.isSelected) {
+              this.checkValidity()
+            }
           })
           .finally(() => { this.isLoading = false })
       }
+    },
+    checkValidity () {
+      this.isValid = !(this.suggestions.length === 0 || this.selected.length < 0 || this.isSelected)
+    },
+    handleSelection (city) {
+      this.city = city
+      this.isSelected = !!city
+      if (this.isSelected) this.isValid = true
+      this.handleSubmision()
     }
   }
 }

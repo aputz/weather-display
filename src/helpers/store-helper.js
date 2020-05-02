@@ -1,6 +1,7 @@
 export const StoreActions = {
   GET_FORECAST: 'getForecast',
-  GET_SUGGESTIONS: 'setSuggestions'
+  GET_SUGGESTIONS: 'setSuggestions',
+  CLEAR_SUGGESTIONS: 'clearSuggestions'
 }
 
 export const StoreMutations = {
