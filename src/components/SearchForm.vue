@@ -39,14 +39,12 @@ export default {
         const { id, name } = this.city
         this.isLoading = true
         this.$store.dispatch(StoreActions.GET_FORECAST, id)
-          .then(() => this.$router.push({ name: 'Results', params: { city: name } }),
-            (ee) => {
-              this.isLoading = false
-            })
+          .then(() => this.$router.push({ name: 'Results', params: { cityName: name.replace(' ', '').toLowerCase() } }))
+          .finally(() => { this.isLoading = false })
       }
     },
     getSuggestions () {
-      if (this.selected.length >= 3) {
+      if (this.selected.length >= 3 && !this.isSelected) {
         this.isLoading = true
         this.$store.dispatch(StoreActions.GET_SUGGESTIONS, this.selected)
           .then(() => {

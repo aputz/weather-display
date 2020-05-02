@@ -2,13 +2,9 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
 
-// import config from '../../config.json'
 import { StoreActions, StoreMutations, StoreGetters } from '../helpers/store-helper'
 
 Vue.use(Vuex)
-
-// const apiAddress = config['api-address']
-// const apiKey = config['api-key']
 
 export default new Vuex.Store({
   state: {
@@ -43,7 +39,7 @@ export default new Vuex.Store({
       const url = `/api/forecast/${id}`
 
       return axios.get(url)
-        .then(response => response.data)
+        .then(response => response.data.result)
         .then(({ city, list }) => {
           commit(StoreMutations.SET_CITY_DATA, city)
           commit(StoreMutations.SET_FORECAST, list)
@@ -58,9 +54,6 @@ export default new Vuex.Store({
           commit(StoreMutations.SET_SUGGESTIONS, response)
         })
         .catch(e => console.log(e))
-    },
-    [StoreActions.CLEAR_SUGGESTIONS] ({ commit }) {
-      commit(StoreMutations.SET_SUGGESTIONS, [])
     }
   }
 })
