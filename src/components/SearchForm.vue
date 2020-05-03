@@ -62,7 +62,7 @@ export default {
       this.city = city
       this.isSelected = !!city
       if (this.isSelected) this.isValid = true
-      this.handleSubmision()
+      // this.handleSubmision()
     }
   }
 }
