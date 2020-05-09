@@ -1,8 +1,19 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
+import { ToastProgrammatic as toast } from 'buefy'
 
 import { StoreActions, StoreMutations, StoreGetters } from '../helpers/store-helper'
+import { handleError } from '../shared/handleError'
+
+const displayErrorToast = (message) => {
+  toast.open({ message, type: 'is-danger' })
+}
+
+axios.interceptors.response.use(
+  response => response,
+  error => handleError(error, displayErrorToast)
+)
 
 Vue.use(Vuex)
 

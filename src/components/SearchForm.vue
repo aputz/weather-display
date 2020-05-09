@@ -44,7 +44,8 @@ export default {
       }
     },
     getSuggestions () {
-      if (this.selected.length >= 3 && !this.isSelected) {
+      const canRequest = this.selected.length >= 3 && !this.isSelected && this.isValid && !this.isLoading
+      if (canRequest) {
         this.isLoading = true
         this.$store.dispatch(StoreActions.GET_SUGGESTIONS, this.selected)
           .then(() => {
@@ -62,7 +63,6 @@ export default {
       this.city = city
       this.isSelected = !!city
       if (this.isSelected) this.isValid = true
-      // this.handleSubmision()
     }
   }
 }
