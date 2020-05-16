@@ -64,7 +64,6 @@ export default new Vuex.Store({
         .then(response => {
           commit(StoreMutations.SET_SUGGESTIONS, response)
         })
-        .catch(e => console.log(e))
     }
   }
 })
