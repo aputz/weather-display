@@ -6,7 +6,6 @@
     "start": "(cd server && node npm start)",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint",
     "heroku-postbuild": "npm install; (cd server && npm install)"
   },
   "dependencies": {
