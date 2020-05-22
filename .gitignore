@@ -2,7 +2,6 @@
 node_modules
 config.json
 todo
-server/static/maps/*
 
 # local env files
 .env

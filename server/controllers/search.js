@@ -45,8 +45,8 @@ exports.getForecast = async (req, res, next) => {
 exports.getImage = async (req, res, next) => {
   if (res.locals.result) {
     const { id, coord } = res.locals.result.city
-    const imagePath = `./static/maps/${id}.png`
-    fs.access(imagePath, fs.OK, async e => {
+    const imagePath = path.join(__dirname, `../static/maps/${id}.png`)
+    fs.access((imagePath), fs.OK, async e => {
       if (e) {
         await mapRenderer.renderMap(coord.lon, coord.lat, id)
       }
