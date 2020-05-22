@@ -1,7 +1,7 @@
 const express = require('express')
 const path = require('path')
 const serveStatic = require('serve-static')
-const search = require('./server/controllers/search')
+const search = require(path.join(__dirname, '/server/controllers/search'))
 
 const app = express()
 const port = process.env.PORT || 3000
