@@ -1,11 +1,13 @@
 .DS_Store
 node_modules
 dist
-server
 config.json
 todo
+server/static/maps/*
+Procfile
 
 # local env files
+.env
 .env.local
 .env.*.local
 
