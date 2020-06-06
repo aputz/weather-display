@@ -39,7 +39,10 @@ export default {
         const { id, name } = this.city
         this.isLoading = true
         this.$store.dispatch(StoreActions.GET_FORECAST, id)
-          .then(() => this.$router.push({ name: 'Results', params: { cityName: name.replace(' ', '').toLowerCase() } }))
+          .then(() => {
+            this.setInStorage(id, name)
+            this.$router.push({ name: 'Results', params: { cityName: name.replace(' ', '').toLowerCase() } })
+          })
           .finally(() => { this.isLoading = false })
       }
     },
@@ -63,6 +66,12 @@ export default {
       this.city = city
       this.isSelected = !!city
       if (this.isSelected) this.isValid = true
+    },
+    setInStorage (id, name) {
+      if (localStorage) {
+        localStorage.setItem('cityId', id)
+        localStorage.setItem('cityName', name)
+      }
     }
   }
 }
