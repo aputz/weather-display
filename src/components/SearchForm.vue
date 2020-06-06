@@ -13,9 +13,11 @@
 
 <script>
 import { StoreActions, StoreGetters } from '../helpers/store-helper'
+import { RememberLast } from '../mixins/RememberLast'
 
 export default {
   name: 'SearchForm',
+  mixins: [RememberLast],
   data () {
     return {
       city: {},
