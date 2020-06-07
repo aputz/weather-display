@@ -49,10 +49,11 @@ export default {
       }
     },
     getSuggestions () {
-      const canRequest = this.selected.length >= 3 && !this.isSelected && this.isValid && !this.isLoading
+      const toSearch = this.selected.trim().replace(/[^A-Za-z]/g, '')
+      const canRequest = toSearch.length >= 3 && !this.isSelected && this.isValid && !this.isLoading
       if (canRequest) {
         this.isLoading = true
-        this.$store.dispatch(StoreActions.GET_SUGGESTIONS, this.selected)
+        this.$store.dispatch(StoreActions.GET_SUGGESTIONS, toSearch)
           .then(() => {
             if (!this.isSelected) {
               this.checkValidity()

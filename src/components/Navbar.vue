@@ -1,11 +1,9 @@
 <template>
   <b-navbar class="navbar__container" type="is-transparent">
     <template slot="brand">
-      <router-link to="/">
-        <b-navbar-item class="navbar__brand">
-          <Logo :appName="appName"/>
-        </b-navbar-item>
-      </router-link>
+      <b-navbar-item tag="div" class="navbar__brand" @click="returnToMainPage()">
+        <Logo :appName="appName"/>
+      </b-navbar-item>
     </template>
   </b-navbar>
 </template>
@@ -22,6 +20,15 @@ export default {
     appName: {
       type: String,
       default: ''
+    }
+  },
+  methods: {
+    returnToMainPage () {
+      this.clearStorage()
+      this.$router.push({ path: '/' })
+    },
+    clearStorage () {
+      if (localStorage) localStorage.clear()
     }
   }
 }
