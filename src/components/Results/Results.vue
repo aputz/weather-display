@@ -14,6 +14,20 @@
 import ForecastTab from './ForecastTab.vue'
 import { StoreGetters } from '../../helpers/store-helper'
 
+const groupTabs = (content) => {
+  return content.reduce((tabbed, current) => {
+    // eslint-disable-next-line camelcase
+    const { dt_txt } = current
+    const date = dt_txt.slice(0, 10)
+    if (Object.prototype.hasOwnProperty.call(tabbed, date)) {
+      tabbed[date].push(current)
+    } else {
+      tabbed = Object.assign(tabbed, { [date]: [current] })
+    }
+    return tabbed
+  }, {})
+}
+
 export default {
   name: 'Results',
   components: {
@@ -21,7 +35,8 @@ export default {
   },
   computed: {
     forecast () {
-      return this.$store.getters[StoreGetters.FORECAST]
+      const forecast = this.$store.getters[StoreGetters.FORECAST]
+      return forecast.length ? groupTabs(forecast) : forecast
     },
     cityData () {
       return this.$store.getters[StoreGetters.CITY_DATA]
