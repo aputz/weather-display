@@ -2,7 +2,6 @@
   <ul v-if="forecast" class="forecast-tab">
     <li v-for="(item, index) in forecast" v-bind:key="index" class="forecast-tab__item">
       <span class="hour">{{ hourFormat(item.dt_txt) }}</span>
-      <span class="date">{{ dateFormat(item.dt_txt) }}</span>
       <img :src="createIconUrl(item.weather[0].icon)" class="description-icon" alt="" />
       <span class="description">{{ item.weather[0].description }}</span>
       <div class="info">
@@ -32,9 +31,6 @@ export default {
     }
   },
   methods: {
-    dateFormat (date) {
-      return Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: 'numeric' }).format(new Date(date))
-    },
     hourFormat (date) {
       return Intl.DateTimeFormat('en-US', { hour: 'numeric', minute: 'numeric' }).format(new Date(date))
     },
@@ -49,10 +45,10 @@ export default {
 @import "../../assets/custom";
 
   .forecast-tab {
-    padding: 2rem 0;
+    padding: 0;
 
     &__item {
-      padding: 1rem 0;
+      padding: 0 0 1rem;
       border-bottom: solid 1px transparentize($primary, 0.8);
       display: grid;
       gap: 0 0.5rem;
@@ -60,7 +56,7 @@ export default {
       grid-template-columns: repeat(2, auto) 1fr;
       grid-template-areas:
         'hour icon description'
-        'date icon description'
+        'hour icon description'
         'info info info';
 
       &:last-child {
@@ -72,7 +68,7 @@ export default {
         grid-template-columns: repeat(2, auto) 1fr auto;
         grid-template-areas:
           'hour icon description info'
-          'date icon description info';
+          'hour icon description info';
       }
     }
   }
@@ -84,11 +80,7 @@ export default {
 
   .hour {
     grid-area: hour;
-    align-self: end;
-  }
-
-  .date {
-    grid-area: date;
+    align-self: center;
   }
 
   .description {
@@ -120,10 +112,10 @@ export default {
       grid-auto-flow: column;
 
       span {
-        text-align: center;
+        text-align: left;
 
         &:nth-child(even) {
-          text-align: center;
+          text-align: left;
         }
       }
     }

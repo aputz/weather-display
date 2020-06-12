@@ -6,7 +6,11 @@
       <span class="tag is-light">{{ timezone }}</span>
       <img :src="cityData.imageSrc" alt="City location">
     </div>
-    <ForecastTab :forecast="forecast" />
+    <b-tabs class="tabs-container">
+      <b-tab-item v-for="(data, key) in forecastData" v-bind:key="key" :label="getFormattedDate(key)">
+        <ForecastTab :forecast="data.forecast" />
+      </b-tab-item>
+    </b-tabs>
   </div>
 </template>
 
@@ -20,9 +24,9 @@ const groupTabs = (content) => {
     const { dt_txt } = current
     const date = dt_txt.slice(0, 10)
     if (Object.prototype.hasOwnProperty.call(tabbed, date)) {
-      tabbed[date].push(current)
+      tabbed[date].forecast.push(current)
     } else {
-      tabbed = Object.assign(tabbed, { [date]: [current] })
+      tabbed = Object.assign(tabbed, { [date]: { date, forecast: [current] } })
     }
     return tabbed
   }, {})
@@ -34,7 +38,7 @@ export default {
     ForecastTab
   },
   computed: {
-    forecast () {
+    forecastData () {
       const forecast = this.$store.getters[StoreGetters.FORECAST]
       return forecast.length ? groupTabs(forecast) : forecast
     },
@@ -44,6 +48,11 @@ export default {
     timezone () {
       const zone = this.cityData.timezone / 3600
       return `${zone > 0 ? '+' : ''}${zone} UTC`
+    }
+  },
+  methods: {
+    getFormattedDate (date) {
+      return Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: 'numeric' }).format(new Date(date))
     }
   },
   created () {
@@ -56,6 +65,10 @@ export default {
 @import "../../assets/custom";
 
 .results {
+  &__container {
+    display: block;
+  }
+
   &__city-data {
     display: grid;
     grid-template-columns: repeat(2, 5rem) 1fr;
@@ -73,6 +86,10 @@ export default {
       height: auto;
     }
   }
+}
+
+.tabs-container {
+  margin-top: 2rem;
 }
 
 </style>
