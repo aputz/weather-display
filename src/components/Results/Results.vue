@@ -4,7 +4,9 @@
       <h2 class="title is-2">{{ cityData.name }}</h2>
       <span class="tag is-primary">{{ cityData.country }}</span>
       <span class="tag is-light">{{ timezone }}</span>
-      <img :src="cityData.imageSrc" alt="City location">
+      <div class="image-container">
+        <img :src="cityData.imageSrc" alt="City location">
+      </div>
     </div>
     <b-tabs class="tabs-container">
       <b-tab-item v-for="(data, key) in forecastData" v-bind:key="key" :label="getFormattedDate(key)">
@@ -79,11 +81,20 @@ export default {
       margin-bottom: 0;
     }
 
-    img {
+    .image-container {
       grid-column: 1 / -1;
-      width: 100%;
-      max-width: 100%;
-      height: auto;
+      position: relative;
+      overflow: hidden;
+      min-height: 400px;
+
+      img {
+        max-width: unset;
+        width: unset;
+        height: auto;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+      }
     }
   }
 }
