@@ -5,7 +5,8 @@
       <span class="tag is-primary">{{ cityData.country }}</span>
       <span class="tag is-light">{{ timezone }}</span>
       <div class="image-container">
-        <img :src="cityData.imageSrc" alt="City location">
+        <img :src="cityData.imageSrc" alt="City location" class="map">
+        <img src="../../assets/pointer.png" alt="" class="pointer">
       </div>
     </div>
     <b-tabs class="tabs-container">
@@ -87,13 +88,22 @@ export default {
       overflow: hidden;
       min-height: 400px;
 
-      img {
+      .map {
         max-width: unset;
         width: unset;
         height: auto;
         position: absolute;
         left: 50%;
         transform: translateX(-50%);
+      }
+
+      .pointer {
+        position: absolute;
+        width: 25px;
+        height: 32px;
+        top: calc(50% - 32px);
+        left: 50%;
+        transform: translate(-50%, -50%);
       }
     }
   }
