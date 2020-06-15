@@ -30,7 +30,22 @@ exports.getForecast = async (req, res, next) => {
   }
   const url = process.env.API_ADDRESS
   res.locals.result = await axios.get(url, { params })
-    .then(response => response.data)
+    .then(response => {
+      if (response.data.list) {
+        response.data.list = response.data.list.reduce((tabbed, current) => {
+          // eslint-disable-next-line camelcase
+          const { dt_txt } = current
+          const date = dt_txt.slice(0, 10)
+          if (Object.prototype.hasOwnProperty.call(tabbed, date)) {
+            tabbed[date].forecast.push(current)
+          } else {
+            tabbed = Object.assign(tabbed, { [date]: { date, forecast: [current] } })
+          }
+          return tabbed
+        }, {})
+      }
+      return response.data
+    })
     .catch(e => {
       if (e.response) {
         const { cod, message } = e.response.data

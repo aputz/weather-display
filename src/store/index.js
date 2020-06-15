@@ -20,12 +20,12 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     city: null,
-    forecast: [],
+    forecast: null,
     suggestions: []
   },
   mutations: {
     [StoreMutations.SET_FORECAST] (state, forecast) {
-      state.forecast = [...forecast]
+      state.forecast = forecast
     },
     [StoreMutations.SET_CITY_DATA] (state, cityData) {
       state.city = cityData
