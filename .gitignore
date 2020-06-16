@@ -2,6 +2,8 @@
 node_modules
 config.json
 todo
+server/static/maps/*
+Procfile
 
 # local env files
 .env

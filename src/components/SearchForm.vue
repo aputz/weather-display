@@ -13,9 +13,11 @@
 
 <script>
 import { StoreActions, StoreGetters } from '../helpers/store-helper'
+import { RememberLast } from '../mixins/RememberLast'
 
 export default {
   name: 'SearchForm',
+  mixins: [RememberLast],
   data () {
     return {
       city: {},
@@ -39,15 +41,19 @@ export default {
         const { id, name } = this.city
         this.isLoading = true
         this.$store.dispatch(StoreActions.GET_FORECAST, id)
-          .then(() => this.$router.push({ name: 'Results', params: { cityName: name.replace(' ', '').toLowerCase() } }))
+          .then(() => {
+            this.setInStorage(id, name)
+            this.$router.push({ name: 'Results', params: { cityName: name.replace(' ', '').toLowerCase() } })
+          })
           .finally(() => { this.isLoading = false })
       }
     },
     getSuggestions () {
-      const canRequest = this.selected.length >= 3 && !this.isSelected && this.isValid && !this.isLoading
+      const toSearch = this.selected.trim().replace(/[^A-Za-z]/g, '')
+      const canRequest = toSearch.length >= 3 && !this.isSelected && this.isValid && !this.isLoading
       if (canRequest) {
         this.isLoading = true
-        this.$store.dispatch(StoreActions.GET_SUGGESTIONS, this.selected)
+        this.$store.dispatch(StoreActions.GET_SUGGESTIONS, toSearch)
           .then(() => {
             if (!this.isSelected) {
               this.checkValidity()
@@ -63,6 +69,12 @@ export default {
       this.city = city
       this.isSelected = !!city
       if (this.isSelected) this.isValid = true
+    },
+    setInStorage (id, name) {
+      if (localStorage) {
+        localStorage.setItem('cityId', id)
+        localStorage.setItem('cityName', name)
+      }
     }
   }
 }

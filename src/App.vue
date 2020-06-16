@@ -15,10 +15,11 @@
     width: 100%;
     height: 100%;
     min-height: 100vh;
-    background-image:  url('assets/bg.jpg');
+    background-image: url('assets/bg.jpg');
     background-color: $primary;
     background-size: cover;
     background-blend-mode: soft-light;
+    background-attachment: fixed;
   }
 }
 </style>

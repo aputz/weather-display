@@ -25,7 +25,9 @@ app.get('/forecast/:id', search.getForecast, search.getImage, (req, res) => {
 })
 
 app.route('/*').get(function (req, res) {
-  res.sendFile(path.join(__dirname, '/dist/index.html'))
+  if (process.env.env !== 'DEV') {
+    res.sendFile(path.join(__dirname, '/dist/index.html'))
+  }
 })
 
 app.listen(port, () => console.log(`App listening on ${port}!`))
