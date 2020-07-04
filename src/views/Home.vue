@@ -1,10 +1,10 @@
 <template>
   <div class="home__container">
-      <div class="home__nested-container">
-    <transition name="slide" @beforeLeave="beforeLeave" @enter="enter" @afterEnter="afterEnter" mode="out-in">
+    <div class="home__nested-container">
+      <transition name="slide" @beforeLeave="beforeLeave" @enter="enter" @afterEnter="afterEnter" mode="out-in">
         <router-view></router-view>
-    </transition>
-      </div>
+      </transition>
+    </div>
   </div>
 </template>
 
