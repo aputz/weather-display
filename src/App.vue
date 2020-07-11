@@ -1,5 +1,6 @@
 <template>
   <div id="app" class="app__container">
+    <Preloader />
     <Navbar :appName="appName" />
     <router-view/>
   </div>
@@ -26,6 +27,8 @@
 
 <script>
 import Navbar from './components/Navbar.vue'
+import Preloader from './components/Preloader.vue'
+import { StoreActions } from './helpers/store-helper'
 
 export default {
   data () {
@@ -34,7 +37,8 @@ export default {
     }
   },
   components: {
-    Navbar
+    Navbar,
+    Preloader
   },
   watch: {
     '$route' (newValue, oldValue) {
@@ -43,6 +47,7 @@ export default {
   },
   created () {
     document.title = 'Weather display'
+    this.$store.dispatch(StoreActions.SET_LOADING, false)
   }
 }
 </script>

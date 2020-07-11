@@ -21,7 +21,8 @@ export default new Vuex.Store({
   state: {
     city: null,
     forecast: null,
-    suggestions: []
+    suggestions: [],
+    isLoading: true
   },
   mutations: {
     [StoreMutations.SET_FORECAST] (state, forecast) {
@@ -32,6 +33,11 @@ export default new Vuex.Store({
     },
     [StoreMutations.SET_SUGGESTIONS] (state, suggestions) {
       state.suggestions = suggestions
+    },
+    [StoreMutations.SET_LOADING] (state, isLoading) {
+      setTimeout(() => {
+        state.isLoading = isLoading
+      }, isLoading ? 0 : 1000)
     }
   },
   getters: {
@@ -43,17 +49,24 @@ export default new Vuex.Store({
     },
     [StoreGetters.SUGGESTIONS] (state) {
       return state.suggestions
+    },
+    [StoreGetters.ISLOADING] (state) {
+      return state.isLoading
     }
   },
   actions: {
     [StoreActions.GET_FORECAST] ({ commit }, id) {
       const url = `/api/forecast/${id}`
+      commit(StoreMutations.SET_LOADING, true)
 
       return axios.get(url)
         .then(response => response.data.result)
         .then(({ city, list }) => {
           commit(StoreMutations.SET_CITY_DATA, city)
           commit(StoreMutations.SET_FORECAST, list)
+        })
+        .finally(() => {
+          commit(StoreMutations.SET_LOADING, false)
         })
     },
     [StoreActions.GET_SUGGESTIONS] ({ commit }, fragment) {
@@ -64,6 +77,9 @@ export default new Vuex.Store({
         .then(response => {
           commit(StoreMutations.SET_SUGGESTIONS, response)
         })
+    },
+    [StoreActions.SET_LOADING] ({ commit }, isLoading) {
+      commit(StoreMutations.SET_LOADING, isLoading)
     }
   }
 })
