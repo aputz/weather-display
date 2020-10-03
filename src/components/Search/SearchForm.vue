@@ -68,7 +68,7 @@ export default {
       if (this.isValid && !!this.city) {
         const { id, name } = this.city
         this.isLoading = true
-        this.$store.dispatch(StoreActions.GET_FORECAST, id)
+        this.$store.dispatch(StoreActions.GET_FORECAST_BY_ID, id)
           .then(() => {
             this.setInStorage(id, name)
             this.$router.push({ name: 'Results', params: { cityName: name.replace(' ', '').toLowerCase() } })

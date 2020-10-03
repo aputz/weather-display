@@ -21,11 +21,48 @@ exports.matchQuery = (req, res, next) => {
   next()
 }
 
-exports.getForecast = async (req, res, next) => {
+exports.getForecastById = async (req, res, next) => {
   const { id } = req.params
   const params = {
     appid: process.env.API_KEY,
     id,
+    units: 'metric'
+  }
+  const url = process.env.API_ADDRESS
+  res.locals.result = await axios.get(url, { params })
+    .then(response => {
+      if (response.data.list) {
+        response.data.list = response.data.list.reduce((tabbed, current) => {
+          // eslint-disable-next-line camelcase
+          const { dt_txt } = current
+          const date = dt_txt.slice(0, 10)
+          if (Object.prototype.hasOwnProperty.call(tabbed, date)) {
+            tabbed[date].forecast.push(current)
+          } else {
+            tabbed = Object.assign(tabbed, { [date]: { date, forecast: [current] } })
+          }
+          return tabbed
+        }, {})
+      }
+      return response.data
+    })
+    .catch(e => {
+      if (e.response) {
+        const { cod, message } = e.response.data
+        res.locals.message = message
+        res.sendStatus(cod)
+      }
+      next(e)
+    })
+  next()
+}
+
+exports.getForecastByCoords = async (req, res, next) => {
+  const { lat, lon } = req.query
+  const params = {
+    appid: process.env.API_KEY,
+    lat,
+    lon,
     units: 'metric'
   }
   const url = process.env.API_ADDRESS
