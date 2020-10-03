@@ -14,8 +14,11 @@
 
 <script>
 import { StoreActions } from '../../helpers/store-helper'
+import { RememberLast } from '../../mixins/RememberLast'
+
 export default {
   name: 'Geolocation',
+  mixins: [RememberLast],
   data () {
     return {
       hasPosition: false,
@@ -44,7 +47,8 @@ export default {
       }
     },
     fetchForecast ({ latitude, longitude }) {
-      this.$store.dispatch(StoreActions.GET_FORECAST_BY_COORDS, { lat: latitude, lon: longitude }).then(({ name }) => {
+      this.$store.dispatch(StoreActions.GET_FORECAST_BY_COORDS, { lat: latitude, lon: longitude }).then(({ id, name }) => {
+        this.saveToStorage(id, name)
         this.$router.push({ name: 'Results', params: { cityName: name.replace(' ', '').toLowerCase() } })
       }).finally(() => {
         this.isProcessing = false

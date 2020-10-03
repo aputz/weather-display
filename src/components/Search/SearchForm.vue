@@ -70,7 +70,7 @@ export default {
         this.isLoading = true
         this.$store.dispatch(StoreActions.GET_FORECAST_BY_ID, id)
           .then(() => {
-            this.setInStorage(id, name)
+            this.saveToStorage(id, name)
             this.$router.push({ name: 'Results', params: { cityName: name.replace(' ', '').toLowerCase() } })
           })
           .finally(() => { this.isLoading = false })
@@ -97,12 +97,6 @@ export default {
       this.city = city
       this.isSelected = !!city
       if (this.isSelected) this.isValid = true
-    },
-    setInStorage (id, name) {
-      if (localStorage) {
-        localStorage.setItem('cityId', id)
-        localStorage.setItem('cityName', name)
-      }
     }
   }
 }
