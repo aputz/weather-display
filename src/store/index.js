@@ -55,7 +55,7 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    [StoreActions.GET_FORECAST] ({ commit }, id) {
+    [StoreActions.GET_FORECAST_BY_ID] ({ commit }, id) {
       const url = `/api/forecast/${id}`
       commit(StoreMutations.SET_LOADING, true)
 
@@ -64,6 +64,21 @@ export default new Vuex.Store({
         .then(({ city, list }) => {
           commit(StoreMutations.SET_CITY_DATA, city)
           commit(StoreMutations.SET_FORECAST, list)
+        })
+        .finally(() => {
+          commit(StoreMutations.SET_LOADING, false)
+        })
+    },
+    [StoreActions.GET_FORECAST_BY_COORDS] ({ commit }, { lat, lon }) {
+      const url = '/api/forecast'
+      commit(StoreMutations.SET_LOADING, true)
+
+      return axios.get(url, { params: { lat, lon } })
+        .then(response => response.data.result)
+        .then(({ city, list }) => {
+          commit(StoreMutations.SET_CITY_DATA, city)
+          commit(StoreMutations.SET_FORECAST, list)
+          return city
         })
         .finally(() => {
           commit(StoreMutations.SET_LOADING, false)

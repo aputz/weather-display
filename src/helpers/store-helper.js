@@ -1,5 +1,6 @@
 export const StoreActions = {
-  GET_FORECAST: 'getForecast',
+  GET_FORECAST_BY_ID: 'getForecastById',
+  GET_FORECAST_BY_COORDS: 'getForecastByCoords',
   GET_SUGGESTIONS: 'setSuggestions',
   SET_LOADING: 'setLoading'
 }
