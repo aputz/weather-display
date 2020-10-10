@@ -10,11 +10,8 @@ export const RememberLast = {
     this.isStorage = !!localStorage
     const saved = this.getFromStorage()
     if (saved) {
-      const { cityId, cityName } = saved
+      const { cityId } = saved
       this.$store.dispatch(StoreActions.GET_FORECAST_BY_ID, cityId)
-        .then(() => {
-          this.$router.push({ name: 'Results', params: { cityName: cityName.replace(' ', '').toLowerCase() } })
-        })
     }
   },
   methods: {
