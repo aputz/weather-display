@@ -35,21 +35,20 @@ export default {
     getCoords () {
       if (this.isGeoAvailable) {
         this.isProcessing = true
-        this.$store.dispatch(StoreActions.SET_LOADING, true)
+        this.$store.dispatch(StoreActions.GET_LOADING, true)
         return navigator.geolocation.getCurrentPosition(({ coords }) => {
           this.hasPosition = true
           this.fetchForecast(coords)
         }, () => {
           this.cantAccessPosition = true
           this.isProcessing = false
-          this.$store.dispatch(StoreActions.SET_LOADING, false)
+          this.$store.dispatch(StoreActions.GET_LOADING, false)
         })
       }
     },
     fetchForecast ({ latitude, longitude }) {
       this.$store.dispatch(StoreActions.GET_FORECAST_BY_COORDS, { lat: latitude, lon: longitude }).then(({ id, name }) => {
         this.saveToStorage(id, name)
-        this.$router.push({ name: 'Results', params: { cityName: name.replace(' ', '').toLowerCase() } })
       }).finally(() => {
         this.isProcessing = false
       })
