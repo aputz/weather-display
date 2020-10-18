@@ -14,11 +14,9 @@
 
 <script>
 import { StoreActions } from '../../helpers/store-helper'
-import { RememberLast } from '../../mixins/RememberLast'
 
 export default {
   name: 'Geolocation',
-  mixins: [RememberLast],
   data () {
     return {
       hasPosition: false,

@@ -47,7 +47,6 @@ export default {
   },
   created () {
     document.title = 'Weather display'
-    console.log(StoreActions.GET_LOADING)
     this.$store.dispatch(StoreActions.GET_LOADING, false)
   }
 }

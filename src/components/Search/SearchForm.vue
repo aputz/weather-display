@@ -25,26 +25,27 @@
         <template v-if="showDropdown" slot="empty">No results found</template>
       </b-autocomplete>
     </b-field>
-    <b-button
-      type="is-primary search-form__submit"
-      native-type="submit"
-      :loading="isLoading"
-      >Look up the weather</b-button
-    >
+    <div class="search-form__submit-container">
+      <RememberLast :toSave="city" />
+      <b-button
+        type="is-primary"
+        native-type="submit"
+        :loading="isLoading"
+      >Look up the weather</b-button>
+    </div>
     <Geolocation />
   </form>
 </template>
 
 <script>
 import { StoreActions, StoreGetters } from '../../helpers/store-helper'
-import { RememberLast } from '../../mixins/RememberLast'
+import RememberLast from './RememberLast'
 import Geolocation from './Geolocation'
 
 export default {
   name: 'SearchForm',
-  mixins: [RememberLast],
   components: {
-    Geolocation
+    Geolocation, RememberLast
   },
   data () {
     return {
@@ -70,7 +71,7 @@ export default {
         this.isLoading = true
         this.$store.dispatch(StoreActions.GET_FORECAST_BY_ID, id)
           .then(() => {
-            this.saveToStorage(id, name)
+            // this.saveToStorage(id, name)
             this.$router.push({ name: 'Results', params: { cityName: name.replace(' ', '').toLowerCase() } })
           })
           .finally(() => { this.isLoading = false })
@@ -104,10 +105,9 @@ export default {
 
 <style lang="scss" scoped>
 .search-form {
-  &__submit {
-    margin-left: auto;
-    margin-right: 0;
-    display: block;
+  &__submit-container {
+    display: flex;
+    justify-content: flex-end;
   }
 }
 </style>
