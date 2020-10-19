@@ -22,7 +22,6 @@ export default {
   created () {
     this.isStorage = !!localStorage
     this.saved = this.getFromStorage()
-    console.log(this.saved)
   },
   methods: {
     getFromStorage () {
@@ -44,7 +43,6 @@ export default {
   },
   watch: {
     toSave (newValue, oldValue) {
-      console.log(newValue, oldValue)
       if (newValue) {
         const { id, name } = newValue
         this.saveToStorage(id, name)

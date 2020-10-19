@@ -71,7 +71,6 @@ export default {
         this.isLoading = true
         this.$store.dispatch(StoreActions.GET_FORECAST_BY_ID, id)
           .then(() => {
-            // this.saveToStorage(id, name)
             this.$router.push({ name: 'Results', params: { cityName: name.replace(' ', '').toLowerCase() } })
           })
           .finally(() => { this.isLoading = false })
