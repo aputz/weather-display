@@ -8,8 +8,8 @@
     <p class="subtitle is-4">to look up weather in following days</p>
     <b-field
       label="City name"
-      :type="isValid ? '' : 'is-danger'"
-      :message="isValid ? '' : 'You need to enter an existing city'"
+      :type="isInputInvalid ? 'is-danger' : ''"
+      :message="isInputInvalid ? 'You need to enter an existing city' : ''"
     >
       <b-autocomplete
         v-model="selected"
@@ -20,7 +20,7 @@
         icon="magnify"
         @input="getSuggestions()"
         @select="(option) => handleSelection(option)"
-        @focus="isValid = true"
+        @focus="isInputInvalid = false"
       >
         <template v-if="showDropdown" slot="empty">No results found</template>
       </b-autocomplete>
@@ -53,7 +53,7 @@ export default {
       selected: '',
       isSelected: false,
       isLoading: false,
-      isValid: true
+      isInputInvalid: false
     }
   },
   computed: {
@@ -66,7 +66,7 @@ export default {
   },
   methods: {
     handleSubmision () {
-      if (this.isValid && !!this.city) {
+      if (this.isInputInvalid && !!this.city) {
         const { id, name } = this.city
         this.isLoading = true
         this.$store.dispatch(StoreActions.GET_FORECAST_BY_ID, id)
@@ -77,26 +77,22 @@ export default {
       }
     },
     getSuggestions () {
+      this.checkSuggestionsValidity()
       const toSearch = this.selected.trim().replace(/[^A-Za-z]/g, '')
-      const canRequest = toSearch.length >= 3 && !this.isSelected && this.isValid && !this.isLoading
+      const canRequest = toSearch.length >= 3 && !this.isSelected && !this.isLoading
       if (canRequest) {
         this.isLoading = true
         this.$store.dispatch(StoreActions.GET_SUGGESTIONS, toSearch)
-          .then(() => {
-            if (!this.isSelected) {
-              this.checkValidity()
-            }
-          })
           .finally(() => { this.isLoading = false })
       }
     },
-    checkValidity () {
-      this.isValid = !(this.suggestions.length === 0 || this.selected.length < 0 || this.isSelected)
+    checkSuggestionsValidity () {
+      this.isInputInvalid = this.suggestions.length === 0 && this.selected.length > 3
     },
     handleSelection (city) {
       this.city = city
       this.isSelected = !!city
-      if (this.isSelected) this.isValid = true
+      if (this.isSelected) this.isInputInvalid = true
     }
   }
 }
