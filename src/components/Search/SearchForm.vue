@@ -41,12 +41,17 @@
 import { StoreActions, StoreGetters } from '../../helpers/store-helper'
 import RememberLast from './RememberLast'
 import Geolocation from './Geolocation'
+import NavigateMixin from '../../mixins/NavigateMixin'
+import LocalStorageMixin from '../../mixins/LocalStorageMixin'
 
 export default {
   name: 'SearchForm',
   components: {
     Geolocation, RememberLast
   },
+  mixins: [
+    NavigateMixin, LocalStorageMixin
+  ],
   data () {
     return {
       city: {},
@@ -66,12 +71,13 @@ export default {
   },
   methods: {
     handleSubmision () {
-      if (this.isInputInvalid && !!this.city) {
+      if (!this.isInputInvalid && !!this.city) {
         const { id, name } = this.city
         this.isLoading = true
         this.$store.dispatch(StoreActions.GET_FORECAST_BY_ID, id)
           .then(() => {
-            this.$router.push({ name: 'Results', params: { cityName: name.replace(' ', '').toLowerCase() } })
+            this.saveToStorage({ cityId: id, cityName: name })
+            this.goTo('Results', { cityName: name.replace(' ', '').toLowerCase() })
           })
           .finally(() => { this.isLoading = false })
       }
