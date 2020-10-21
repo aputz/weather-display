@@ -5,6 +5,11 @@ const axios = require('axios')
 const list = require(path.join(__dirname, '../static/city.list.json'))
 const mapRenderer = require(path.join(__dirname, '../helpers/map-render'))
 
+const matchNameToId = (name) => {
+  const result = list.find(city => city.name.toLowerCase() === name.replace('_', ' '))
+  return result
+}
+
 exports.matchQuery = (req, res, next) => {
   const { query } = req.params
   const result = list.filter(function (city) {
@@ -18,6 +23,46 @@ exports.matchQuery = (req, res, next) => {
     const { id, name, country } = item
     return { id, name, country }
   })
+  next()
+}
+
+exports.getForecastByName = async (req, res, next) => {
+  const city = matchNameToId(req.query.name)
+  if (!city) {
+    res.local.result = null
+  } else {
+    const params = {
+      appid: process.env.API_KEY,
+      id: city.id,
+      units: 'metric'
+    }
+    const url = process.env.API_ADDRESS
+    res.locals.result = await axios.get(url, { params })
+      .then(response => {
+        if (response.data.list) {
+          response.data.list = response.data.list.reduce((tabbed, current) => {
+          // eslint-disable-next-line camelcase
+            const { dt_txt } = current
+            const date = dt_txt.slice(0, 10)
+            if (Object.prototype.hasOwnProperty.call(tabbed, date)) {
+              tabbed[date].forecast.push(current)
+            } else {
+              tabbed = Object.assign(tabbed, { [date]: { date, forecast: [current] } })
+            }
+            return tabbed
+          }, {})
+        }
+        return response.data
+      })
+      .catch(e => {
+        if (e.response) {
+          const { cod, message } = e.response.data
+          res.locals.message = message
+          res.sendStatus(cod)
+        }
+        next(e)
+      })
+  }
   next()
 }
 
