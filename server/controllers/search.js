@@ -29,8 +29,10 @@ exports.matchQuery = (req, res, next) => {
 exports.getForecastByName = async (req, res, next) => {
   const city = matchNameToId(req.query.name)
   if (!city) {
-    res.local.result = null
+    res.locals.message = 'City not found'
+    res.sendStatus(404)
   } else {
+    res.local.isFound = true
     const params = {
       appid: process.env.API_KEY,
       id: city.id,

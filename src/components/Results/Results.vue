@@ -50,11 +50,12 @@ export default {
   created () {
     if (!this.cityData && !this.$route.params.cityName) {
       this.goTo('Search Form')
-    }
-
-    if (!this.cityData) {
+    } else if (!this.cityData && this.$route.params.cityName) {
       const query = this.transformFromParam(this.$route.params.cityName)
       this.$store.dispatch(StoreActions.GET_FORECAST_BY_NAME, query)
+        .catch(e => {
+          this.goTo('Search Form')
+        })
     }
   }
 }
