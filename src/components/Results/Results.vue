@@ -19,13 +19,17 @@
 
 <script>
 import ForecastTab from './ForecastTab.vue'
-import { StoreGetters } from '../../helpers/store-helper'
+import { StoreGetters, StoreActions } from '../../helpers/store-helper'
+import NavigateMixin from '../../mixins/NavigateMixin'
 
 export default {
   name: 'Results',
   components: {
     ForecastTab
   },
+  mixins: [
+    NavigateMixin
+  ],
   computed: {
     forecastData () {
       return this.$store.getters[StoreGetters.FORECAST]
@@ -44,7 +48,15 @@ export default {
     }
   },
   created () {
-    if (!this.cityData) { this.$router.push({ name: 'Search Form' }) }
+    if (!this.cityData && !this.$route.params.cityName) {
+      this.goTo('Search Form')
+    } else if (!this.cityData && this.$route.params.cityName) {
+      const query = this.transformFromParam(this.$route.params.cityName)
+      this.$store.dispatch(StoreActions.GET_FORECAST_BY_NAME, query)
+        .catch(e => {
+          this.goTo('Search Form')
+        })
+    }
   }
 }
 </script>
@@ -55,6 +67,7 @@ export default {
 .results {
   &__container {
     display: block;
+    min-height: 80vh;
   }
 
   &__city-data {

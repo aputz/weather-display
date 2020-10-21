@@ -14,9 +14,14 @@
 
 <script>
 import { StoreActions } from '../../helpers/store-helper'
+import NavigateMixin from '../../mixins/NavigateMixin'
+import LocalStorageMixin from '../../mixins/LocalStorageMixin'
 
 export default {
   name: 'Geolocation',
+  mixins: [
+    NavigateMixin, LocalStorageMixin
+  ],
   data () {
     return {
       hasPosition: false,
@@ -46,7 +51,8 @@ export default {
     },
     fetchForecast ({ latitude, longitude }) {
       this.$store.dispatch(StoreActions.GET_FORECAST_BY_COORDS, { lat: latitude, lon: longitude }).then(({ id, name }) => {
-        this.saveToStorage(id, name)
+        this.saveToStorage({ cityId: id, cityName: name })
+        this.goTo('Results', { cityName: this.transformToParam(name) })
       }).finally(() => {
         this.isProcessing = false
       })

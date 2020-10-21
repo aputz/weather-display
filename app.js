@@ -20,6 +20,10 @@ app.get('/search/:query', search.matchQuery, (req, res) => {
   res.json(res.locals)
 })
 
+app.get('/forecast/name', search.getForecastByName, search.getImage, (req, res) => {
+  res.json(res.locals)
+})
+
 app.get('/forecast/:id', search.getForecastById, search.getImage, (req, res) => {
   res.json(res.locals)
 })

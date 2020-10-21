@@ -79,6 +79,24 @@ export default new Vuex.Store({
           commit(StoreMutations.SET_FETCHING_DATA, false)
         })
     },
+    [StoreActions.GET_FORECAST_BY_NAME] ({ commit }, name) {
+      if (this.state.isFetchingData) return null
+      const url = '/api/forecast/name'
+      commit(StoreMutations.SET_LOADING, true)
+      commit(StoreMutations.SET_FETCHING_DATA, true)
+
+      return axios.get(url, { params: { name } })
+        .then(response => response.data.result)
+        .then(({ city, list }) => {
+          console.log(city)
+          commit(StoreMutations.SET_CITY_DATA, city)
+          commit(StoreMutations.SET_FORECAST, list)
+        })
+        .finally(() => {
+          commit(StoreMutations.SET_LOADING, false)
+          commit(StoreMutations.SET_FETCHING_DATA, false)
+        })
+    },
     [StoreActions.GET_FORECAST_BY_COORDS] ({ commit }, { lat, lon }) {
       const url = '/api/forecast'
       commit(StoreMutations.SET_LOADING, true)
