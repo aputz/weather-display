@@ -30,7 +30,7 @@ export default {
     getForecast () {
       const { cityId, cityName } = this.saved
       this.$store.dispatch(StoreActions.GET_FORECAST_BY_ID, cityId).then(() => {
-        this.goTo('Results', { cityName: cityName.replace(' ', '').toLowerCase() })
+        this.goTo('Results', { cityName: this.transformToParam(cityName) })
       })
     }
   },

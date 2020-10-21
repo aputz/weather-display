@@ -77,14 +77,14 @@ export default {
         this.$store.dispatch(StoreActions.GET_FORECAST_BY_ID, id)
           .then(() => {
             this.saveToStorage({ cityId: id, cityName: name })
-            this.goTo('Results', { cityName: name.replace(' ', '').toLowerCase() })
+            this.goTo('Results', { cityName: this.transformToParam(name) })
           })
           .finally(() => { this.isLoading = false })
       }
     },
     getSuggestions () {
       this.checkSuggestionsValidity()
-      const toSearch = this.selected.trim().replace(/[^A-Za-z]/g, '')
+      const toSearch = this.selected.trim().replace(/[^A-Za-z\s]/g, '')
       const canRequest = toSearch.length >= 3 && !this.isSelected && !this.isLoading
       if (canRequest) {
         this.isLoading = true

@@ -52,7 +52,7 @@ export default {
     fetchForecast ({ latitude, longitude }) {
       this.$store.dispatch(StoreActions.GET_FORECAST_BY_COORDS, { lat: latitude, lon: longitude }).then(({ id, name }) => {
         this.saveToStorage({ cityId: id, cityName: name })
-        this.goTo('Results', { cityName: name.replace(' ', '').toLowerCase() })
+        this.goTo('Results', { cityName: this.transformToParam(name) })
       }).finally(() => {
         this.isProcessing = false
       })
