@@ -32,7 +32,6 @@ exports.getForecastByName = async (req, res, next) => {
     res.locals.message = 'City not found'
     res.sendStatus(404)
   } else {
-    res.local.isFound = true
     const params = {
       appid: process.env.API_KEY,
       id: city.id,
