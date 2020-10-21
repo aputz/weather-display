@@ -5,6 +5,9 @@ export default {
     },
     transformToParam (str) {
       return str.replace(' ', '_').toLowerCase()
+    },
+    transformFromParam (str) {
+      return str.replace('_', ' ')
     }
   }
 }

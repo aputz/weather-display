@@ -6,7 +6,7 @@ const list = require(path.join(__dirname, '../static/city.list.json'))
 const mapRenderer = require(path.join(__dirname, '../helpers/map-render'))
 
 const matchNameToId = (name) => {
-  const result = list.find(city => city.name.toLowerCase() === name.replace('_', ' '))
+  const result = list.find(city => city.name.toLowerCase() === name)
   return result
 }
 
