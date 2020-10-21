@@ -1,6 +1,5 @@
 .DS_Store
 node_modules
-dist
 config.json
 todo
 server/static/maps/*
@@ -24,3 +23,5 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw?
+.editorconfig
+.vscode

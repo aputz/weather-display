@@ -3,14 +3,17 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "start": "node app.js",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
+    "heroku-postbuild": "npm install",
     "server": "nodemon app.js"
   },
   "dependencies": {
     "axios": "^0.19.2",
     "buefy": "^0.8.10",
+    "connect-history-api-fallback": "^1.6.0",
     "core-js": "^3.6.4",
     "express": "^4.17.1",
     "normalize-scss": "^7.0.1",
