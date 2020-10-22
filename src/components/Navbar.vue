@@ -1,5 +1,5 @@
 <template>
-  <b-navbar class="navbar__container" type="is-transparent">
+  <b-navbar class="navbar__container" type="is-transparent" :mobile-burger="false">
     <template slot="brand">
       <b-navbar-item tag="div" class="navbar__brand" @click="returnToMainPage()">
         <Logo :appName="appName"/>
