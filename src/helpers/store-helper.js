@@ -12,7 +12,8 @@ export const StoreMutations = {
   SET_CITY_DATA: 'setCityData',
   SET_SUGGESTIONS: 'setSuggestions',
   SET_LOADING: 'setLoading',
-  SET_FETCHING_DATA: 'setFetchingData'
+  SET_FETCHING_DATA: 'setFetchingData',
+  SET_WEATHER_DESC: 'setWeatherDesc'
 }
 
 export const StoreGetters = {
@@ -20,5 +21,6 @@ export const StoreGetters = {
   CITY_DATA: 'cityData',
   SUGGESTIONS: 'suggestions',
   ISLOADING: 'isLoading',
-  IS_FETCHING_DATA: 'isFetchingData'
+  IS_FETCHING_DATA: 'isFetchingData',
+  WEATHER_DESC: 'weatherDesc'
 }

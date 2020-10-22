@@ -23,7 +23,8 @@ export default new Vuex.Store({
     forecast: null,
     suggestions: [],
     isLoading: true,
-    isFetchingData: false
+    isFetchingData: false,
+    weatherDesc: null
   },
   mutations: {
     [StoreMutations.SET_FORECAST] (state, forecast) {
@@ -42,6 +43,13 @@ export default new Vuex.Store({
     },
     [StoreMutations.SET_FETCHING_DATA] (state, isFetchingData) {
       state.isFetchingData = isFetchingData
+    },
+    [StoreMutations.SET_WEATHER_DESC] (state) {
+      const currentForecast = state.forecast[Object.keys(state.forecast)[0]].forecast
+      const currentWeather = currentForecast[0].weather[0].main
+      const isNight = currentForecast[0].sys.pod === 'n'
+
+      state.weatherDesc = { currentWeather, isNight }
     }
   },
   getters: {
@@ -59,6 +67,9 @@ export default new Vuex.Store({
     },
     [StoreGetters.IS_FETCHING_DATA] (state) {
       return state.isFetchingData
+    },
+    [StoreGetters.WEATHER_DESC] (state) {
+      return state.weatherDesc
     }
   },
   actions: {
@@ -73,6 +84,7 @@ export default new Vuex.Store({
         .then(({ city, list }) => {
           commit(StoreMutations.SET_CITY_DATA, city)
           commit(StoreMutations.SET_FORECAST, list)
+          commit(StoreMutations.SET_WEATHER_DESC)
         })
         .finally(() => {
           commit(StoreMutations.SET_LOADING, false)
@@ -90,6 +102,7 @@ export default new Vuex.Store({
         .then(({ city, list }) => {
           commit(StoreMutations.SET_CITY_DATA, city)
           commit(StoreMutations.SET_FORECAST, list)
+          commit(StoreMutations.SET_WEATHER_DESC)
         })
         .finally(() => {
           commit(StoreMutations.SET_LOADING, false)
@@ -105,6 +118,7 @@ export default new Vuex.Store({
         .then(({ city, list }) => {
           commit(StoreMutations.SET_CITY_DATA, city)
           commit(StoreMutations.SET_FORECAST, list)
+          commit(StoreMutations.SET_WEATHER_DESC)
           return city
         })
         .finally(() => {
@@ -114,6 +128,7 @@ export default new Vuex.Store({
     [StoreActions.GET_SUGGESTIONS] ({ commit }, fragment) {
       const url = `/api/search/${fragment}`
       commit(StoreMutations.SET_SUGGESTIONS, [])
+
       return axios.get(url)
         .then(response => response.data.result)
         .then(response => {

@@ -1,5 +1,5 @@
 <template>
-  <div id="app" class="app__container">
+  <div id="app" :class="['app__container', ...classes]">
     <Preloader />
     <Navbar :appName="appName" />
     <router-view/>
@@ -23,17 +23,47 @@
     background-attachment: fixed;
   }
 }
+
+.filter {
+  transition: background-color 0.25s;
+
+  &.night {
+    background-color: $dark;
+
+    &.rain {
+      background-color: desaturate($dark, 50%);
+    }
+
+    &.cloud, &.snow {
+      background-color: desaturate($dark, 75%);
+    }
+  }
+
+  &.rain {
+    background-color: desaturate($primary, 50%);
+  }
+
+  &.cloud, &.snow {
+    background-color: desaturate($primary, 75%);
+  }
+}
 </style>
 
 <script>
 import Navbar from './components/Navbar.vue'
 import Preloader from './components/Preloader.vue'
-import { StoreActions } from './helpers/store-helper'
+import { StoreActions, StoreGetters } from './helpers/store-helper'
 
 export default {
   data () {
     return {
-      appName: 'Weather display'
+      appName: 'Weather display',
+      classes: []
+    }
+  },
+  computed: {
+    weatherDesc () {
+      return this.$store.getters[StoreGetters.WEATHER_DESC]
     }
   },
   components: {
@@ -43,6 +73,24 @@ export default {
   watch: {
     '$route' (newValue, oldValue) {
       document.title = newValue.meta.title || 'Weather display'
+    },
+    'weatherDesc' (newValue, oldValue) {
+      if (newValue !== null) {
+        this.classes = []
+        this.classes.push('filter')
+        if (newValue.isNight) this.classes.push('night')
+        switch (newValue.currentWeather) {
+          case 'Rain':
+            this.classes.push('rain')
+            break
+          case 'Clouds':
+            this.classes.push('cloud')
+            break
+          case 'Snow':
+            this.classes.push('snow')
+            break
+        }
+      }
     }
   },
   created () {
