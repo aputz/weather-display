@@ -88,7 +88,6 @@ export default new Vuex.Store({
       return axios.get(url, { params: { name } })
         .then(response => response.data.result)
         .then(({ city, list }) => {
-          console.log(city)
           commit(StoreMutations.SET_CITY_DATA, city)
           commit(StoreMutations.SET_FORECAST, list)
         })

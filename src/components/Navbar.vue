@@ -45,6 +45,7 @@ export default {
   &__brand {
     position: relative;
     height: 100%;
+    cursor: pointer;
 
     &::before {
       content: '';

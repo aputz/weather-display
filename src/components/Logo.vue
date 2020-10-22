@@ -1,5 +1,5 @@
 <template>
-  <h1 class="title is-6 has-text-white logo__container" >{{appName}}</h1>
+  <h1 class="title is-6 has-text-white logo__container">{{appName}}</h1>
 </template>
 
 <script>
